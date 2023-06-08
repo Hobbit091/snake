@@ -5,6 +5,14 @@ node ('ubuntu'){
        checkout scm
     }  
     
+    stage('SCA') {
+        build 'SCA-SAST-SNYK'
+    }
+    
+    stage('SAST') {
+        build 'SCA-SAST-SONARQUBE'
+    }
+    
     stage('Build-and-Tag') {
     /* This builds the actual image; synonymous to
          * docker build on the command line */
@@ -13,15 +21,16 @@ node ('ubuntu'){
     stage('Post-to-dockerhub') {
     
      docker.withRegistry('https://registry.hub.docker.com', 'dockerhub_creds') {
-            app.push("latest")
-        			}
-         }
-  
-    
+         app.push("latest")
+     }
+    }
+      
     stage('Pull-image-server') {
+        sh "docker-compose down"
+        sh "docker-compose up -d"
+    }
     
-         sh "docker-compose down"
-         sh "docker-compose up -d"	
-      }
- 
-}
+    stage('DAST') {
+        build 'SECURITY-DAST-Arachni'
+    }
+ }

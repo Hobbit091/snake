@@ -1,7 +1,7 @@
 version: '2'
 services:
   snake:
-    image: 'gevda140/snake'
+    image: 'hobbit091/snake'
     environment:
       - "PORT:3000"
     ports:

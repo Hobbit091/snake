@@ -9,7 +9,7 @@ node ('ubuntu'){
     stage('Build-and-Tag') {
     /* This builds the actual image; synonymous to
          * docker build on the command line */
-        app = docker.build("gevda140/snake")
+        app = docker.build("hobbit091/snake")
     }
     stage('Post-to-dockerhub') {
     
